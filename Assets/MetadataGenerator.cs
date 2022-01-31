@@ -42,9 +42,9 @@ public class MetadataGenerator : MonoBehaviour
                 var ratings = audica.GetDifficultyRatings();
                 Console.WriteLine($"{Path.GetFileName(targetPath)}," +
                                   $"{audica.GetHashedSongID()}," +
-                                  $"{(ratings.expert == null ? string.Empty : ratings.expert.difficultyRating.ToString())}" +
-                                  $"{(ratings.advanced == null ? string.Empty : ratings.advanced.difficultyRating.ToString())}" +
-                                  $"{(ratings.standard == null ? string.Empty : ratings.standard.difficultyRating.ToString())}" +
+                                  $"{(ratings.expert == null ? string.Empty : ratings.expert.difficultyRating.ToString())}," +
+                                  $"{(ratings.advanced == null ? string.Empty : ratings.advanced.difficultyRating.ToString())}," +
+                                  $"{(ratings.standard == null ? string.Empty : ratings.standard.difficultyRating.ToString())}," +
                                   $"{(ratings.beginner == null ? string.Empty : ratings.advanced.difficultyRating.ToString())}" +
                                   $"");
             }

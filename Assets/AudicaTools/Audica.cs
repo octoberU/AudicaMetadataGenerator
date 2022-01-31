@@ -32,10 +32,13 @@ namespace AudicaTools
 
         public byte[] albumArt;
 
+        public string fileName;
+
         public Audica(string filePath)
         {
             CheckPath(filePath);
             ZipArchive zip = ZipFile.OpenRead(filePath);
+            fileName = Path.GetFileNameWithoutExtension(filePath);
 
             string[] zipFileNames = zip.Entries.Select(entry => entry.Name).ToArray(); //Get file names once so that we don't have to loop over entries again
 
@@ -213,7 +216,7 @@ namespace AudicaTools
 
         public string GetHashedSongID()
         {
-            return desc.songID + "_" + GetHash();
+            return fileName + "_" + GetHash();
         }
 
         private string GetHash()
