@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
 using AudicaTools;
+using UnityEngine;
+using Vector2 = System.Numerics.Vector2;
 
 namespace DifficultyCalculation
 {
@@ -43,14 +45,35 @@ namespace DifficultyCalculation
 
         private void EvaluateDifficulties(Audica audica)
         {
-            var expertCues = audica.expert.cues;
-            if (expertCues.Count > 0 && expertCues != null) this.expert = new CalculatedDifficulty(expertCues, audica.tempoData);
-            var advancedCues = audica.advanced.cues;
-            if (advancedCues.Count > 0 && advancedCues != null) this.advanced = new CalculatedDifficulty(advancedCues, audica.tempoData);
-            var standardCues = audica.moderate.cues;
-            if (standardCues.Count > 0 && standardCues != null) this.standard = new CalculatedDifficulty(standardCues, audica.tempoData);
-            var beginnerCues = audica.beginner.cues;
-            if (beginnerCues.Count > 0 && beginnerCues != null) this.beginner = new CalculatedDifficulty(beginnerCues, audica.tempoData);
+            try
+            {
+                if (audica.expert != null && audica.expert.cues.Count > 0 && audica.expert.cues != null) 
+                    this.expert = new CalculatedDifficulty(audica.expert.cues, audica.tempoData);
+                if (audica.advanced != null && audica.advanced.cues != null && audica.advanced.cues.Count > 0 && audica.advanced.cues != null) 
+                    this.advanced = new CalculatedDifficulty(audica.advanced.cues, audica.tempoData); 
+                if (audica.moderate != null && audica.moderate.cues.Count > 0 && audica.moderate.cues != null) 
+                    this.standard = new CalculatedDifficulty(audica.moderate.cues, audica.tempoData);
+                if (audica.beginner != null && audica.beginner.cues.Count > 0 && audica.beginner.cues != null) 
+                    this.beginner = new CalculatedDifficulty(audica.beginner.cues, audica.tempoData);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(audica == null);
+                Console.WriteLine(audica.expert == null);
+                Console.WriteLine(audica.expert.cues == null);
+                Console.WriteLine(audica.expert.cues.Count == 0);
+                Console.WriteLine(audica.advanced == null);
+                Console.WriteLine(audica.advanced.cues == null);
+                Console.WriteLine(audica.advanced.cues.Count == 0);
+                Console.WriteLine(audica.moderate == null);
+                Console.WriteLine(audica.moderate.cues == null);
+                Console.WriteLine(audica.moderate.cues.Count == 0);
+                Console.WriteLine(audica.beginner == null);
+                Console.WriteLine(audica.beginner.cues == null);
+                Console.WriteLine(audica.beginner.cues.Count == 0);              
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
     public class CalculatedDifficulty

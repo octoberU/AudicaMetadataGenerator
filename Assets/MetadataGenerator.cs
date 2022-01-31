@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class MetadataGenerator : MonoBehaviour
 {
-    string targetPath = String.Empty;
+    List<string> targetPaths = new List<string>();
     
     void Awake()
     {
@@ -21,15 +21,35 @@ public class MetadataGenerator : MonoBehaviour
             {
                 if (args[i] == "-path")
                 {
-                    if (i + 1 < args.Length)
+                    if (i + 1 < args.Length) //We have a single path
                     {
-                        //Debug.Log("Received a command line argument");
-                        //Console.WriteLine("Received a command line argument");
-                        targetPath = args[i + 1];
+                        for (int k = 1; i + k < args.Length; k++)
+                        {
+                            targetPaths.Add(args[i + k]);
+                        }
                     }
                 }
             }
-            Console.WriteLine($"Searching for files in {targetPath}. Found file: {File.Exists(targetPath)}. Audica file hash: {(new Audica(targetPath).GetHashedSongID())}");
+            foreach (var targetPath in targetPaths)
+            {
+                if (!File.Exists(targetPath))
+                {
+                    Debug.LogError($"{Path.GetFileName(targetPath)} does not exist");
+                    continue;
+                }
+
+                var audica = new Audica(targetPath);
+                var ratings = audica.GetDifficultyRatings();
+                Console.WriteLine($"{Path.GetFileName(targetPath)}," +
+                                  $"{audica.GetHashedSongID()}," +
+                                  $"{(ratings.expert == null ? string.Empty : ratings.expert.difficultyRating.ToString())}" +
+                                  $"{(ratings.advanced == null ? string.Empty : ratings.advanced.difficultyRating.ToString())}" +
+                                  $"{(ratings.standard == null ? string.Empty : ratings.standard.difficultyRating.ToString())}" +
+                                  $"{(ratings.beginner == null ? string.Empty : ratings.advanced.difficultyRating.ToString())}" +
+                                  $"");
+            }
+            
+            
             
         }
         catch (Exception e)
